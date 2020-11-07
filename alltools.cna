@@ -1,0 +1,12 @@
+include(script_resource("sharptools.cna"));
+elog("Sharptools script loaded");
+
+
+alias type {
+	if ($2){
+		bshell($1, "type $2");
+	} else {
+		berror($1, "Error: You must specify a file");
+	}
+}
+beacon_command_register("type", "Displays the contents of a file", "Use: type [file]\n\nDisplays the contents of [file]");

